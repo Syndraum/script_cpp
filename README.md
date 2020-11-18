@@ -5,3 +5,7 @@
 `class.sh` create .cpp and .hpp files. You can specify as many class names as you want
 
 `getSet.sh` check .cpp and .hpp files in actual dir and generate setter and getter. You can specify class name in arguments for specific application
+
+# Utilisation
+
+run command with bash ```bash class.sh```

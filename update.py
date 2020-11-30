@@ -7,7 +7,7 @@ def main(argv):
 		return 1
 	for arg in argv:
 		Myclass = Cpp(arg)
-		Myclass.createFiles()
+		Myclass.update()
 
 if __name__ == "__main__":
 	main(sys.argv[1:])

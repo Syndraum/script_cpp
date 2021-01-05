@@ -136,16 +136,11 @@ class Cpp:
 		h.close()
 		return 0
 
-	# def	parsSetter(self, line, file):
-	# 	args = line.split()
-	# 	func = args[1][3:].split("(")
-	# 	m_name = func[0]
-	# 	m_type = func[1]
-	# 	m_poiter
-	# 	attribute = Attribute()
-
 	def getClassGetter(self, att):
-		return "\n{att.type}\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
+		if (len(att.type) < 4):
+			return "\n{att.type}\t\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
+		else:
+			return "\n{att.type}\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
 
 	def getClassSetter(self, att):
 		return "\nvoid\t{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.name};\n}}\n".format(att=att, self=self)

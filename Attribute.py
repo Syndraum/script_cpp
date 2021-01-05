@@ -9,4 +9,7 @@ class Attribute:
 		self.set = -1
 
 	def getHeader(self):
-		return "\n\t{att.type}\t{att.pointer}{att.getter};\n\tvoid\t{att.setter};".format(att=self)
+		if len(self.type) < 4:
+			return "\n\t{att.type}\t\t{att.pointer}{att.getter};\n\tvoid\t{att.setter};".format(att=self)
+		else:
+			return "\n\t{att.type}\t{att.pointer}{att.getter};\n\tvoid\t{att.setter};".format(att=self)

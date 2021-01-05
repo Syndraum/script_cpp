@@ -6,6 +6,8 @@ class Cpp:
 		self.filename = self.name + ".cpp"
 		self.headerName = self.name + ".hpp"
 		self.attributes = []
+		self.setters = []
+		self.getters = []
 		self.insertLine = -1
 	
 	def is_file_exist(self, filename):
@@ -15,11 +17,28 @@ class Cpp:
 		except OSError:
 			return False
 		else:
-			print("file " + filename + " already exist")
 			return True
 	
+	def file_already_exist(self, filename):
+		if self.is_file_exist(filename):
+			print("file " + filename + " already exist")
+			return True
+		return False
+
+	def file_not_exist(self, filename):
+		if not self.is_file_exist(filename):
+			print("file " + filename + " not exist")
+			return True
+		return False
+
 	def is_exist(self):
-		return self.is_file_exist(self.filename) or self.is_file_exist(self.headerName)
+		if self.is_file_exist(self.filename):
+			print("file " + self.filename + " already exist")
+			return True
+		if self.is_file_exist(self.headerName):
+			print("file " + self.headerName + " already exist")
+			return True
+		return False
 	
 	def createFiles(self):
 		if self.is_exist():
@@ -51,17 +70,21 @@ class Cpp:
 		self.attributes.append(Attribute(m_type, m_name, m_pointer))
 
 	def	update(self):
+		if self.file_not_exist(self.filename) or self.file_not_exist(self.headerName):
+			return 1
 		ret = self.parsing()
 		if  ret > 0:
 			return ret
 		f = open(self.filename, "a")
 		buff=""
 		for att in self.attributes:
-			# f.write(self.getClassGetter(att))
-			# f.write(self.getClassSetter(att))
-			buff += att.getHeader()
+			if att.name not in self.setters and att.name not in self.getters:
+				f.write(self.getClassGetter(att))
+				f.write(self.getClassSetter(att))
+				buff += att.getHeader()
 		f.close()
-		buff += '\n'
+		if buff != "":
+			buff += '\n'
 		h = open(self.headerName, "r+")
 		tmp = h.readlines()
 		h.seek(0)
@@ -69,6 +92,7 @@ class Cpp:
 		tmp.insert(self.insertLine, buff)
 		h.writelines(tmp)
 		h.close()
+		return 0
 
 	def parsing(self):
 		private = True
@@ -94,10 +118,12 @@ class Cpp:
 				if line.find("private") != -1:
 					private = True
 				else:
-					if line.find("set") != -1:
-						print("set")
-					if line.find("get") != -1:
-						print("get")
+					setter=line.find("set")
+					getter=line.find("get")
+					if setter != -1:
+						self.setters.append(line[setter+3:line.find("(", setter)].lower())
+					if getter != -1:
+						self.getters.append(line[getter+3:line.find("(", getter)].lower())
 				if line.find(self.name) != -1:
 					self.insertLine = actualLine
 		if self.insertLine == -1:
@@ -109,6 +135,14 @@ class Cpp:
 		self.insertLine += 1
 		h.close()
 		return 0
+
+	# def	parsSetter(self, line, file):
+	# 	args = line.split()
+	# 	func = args[1][3:].split("(")
+	# 	m_name = func[0]
+	# 	m_type = func[1]
+	# 	m_poiter
+	# 	attribute = Attribute()
 
 	def getClassGetter(self, att):
 		return "\n{att.type}\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)

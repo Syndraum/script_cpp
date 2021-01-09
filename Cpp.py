@@ -1,10 +1,15 @@
 from Attribute import Attribute
 
 class Cpp:
-	def __init__(self, name):
+	def __init__(self, name, prefix):
 		self.name = name
-		self.filename = self.name + ".cpp"
-		self.headerName = self.name + ".hpp"
+		if (prefix):
+			self.prefix = "Class"
+			self.filename = self.prefix + self.name.capitalize() + ".cpp"
+			self.headerName = self.prefix + self.name.capitalize() + ".hpp"
+		else:
+			self.filename = self.name + ".cpp"
+			self.headerName = self.name + ".hpp"
 		self.attributes = []
 		self.setters = []
 		self.getters = []

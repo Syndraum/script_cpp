@@ -7,7 +7,7 @@ def main(argv):
 	if (len(argv) == 0):
 		files = [f[:-4] for f in listdir("./") if isfile(join("./", f)) and f[-4:] == ".cpp"]
 		for f in files:
-			Myclass = Cpp(f)
+			Myclass = Cpp(f, False)
 			Myclass.update()
 	else:
 		for arg in argv:

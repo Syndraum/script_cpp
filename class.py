@@ -12,8 +12,15 @@ def main(argv, prefix):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="create cpp class", prog="class")
-	parser.add_argument("-p", "--prefix", action="store_true", help="prefix filename with 'Class'")
-	parser.add_argument("-s", "--suffix", action="store_true", help="suffix filename with '.class'")
+	group = parser.add_mutually_exclusive_group()
+	group.add_argument("-p", "--prefix", action="store_true", help="prefix filename with 'Class'")
+	group.add_argument("-s", "--suffix", action="store_true", help="suffix filename with '.class'")
 	parser.add_argument("className", nargs='+', help="name of your class ")
 	args = parser.parse_args()
-	main(args.className, args.prefix)
+	if args.prefix == True:
+		main(args.className, "pre")
+	elif (args.suffix == True):
+		main(args.className, "suf")
+	else:
+		main(args.className)
+	# main(args.className, args.prefix)

@@ -11,7 +11,7 @@ def main(argv, prefix):
 		Myclass.createFiles()
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(description="create cpp class", prog="class")
+	parser = argparse.ArgumentParser(description="create cpp class", prog="cppclass")
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument("-p", "--prefix", action="store_true", help="prefix filename with 'Class'")
 	group.add_argument("-s", "--suffix", action="store_true", help="suffix filename with '.class'")
@@ -23,4 +23,3 @@ if __name__ == "__main__":
 		main(args.className, "suf")
 	else:
 		main(args.className)
-	# main(args.className, args.prefix)

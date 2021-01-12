@@ -107,8 +107,14 @@ class Cpp:
 		self.insertLine = -1
 		actualLine = 0
 		h = open(self.headerName, "r")
-		while h.readline().find("class") == -1:
+		buffer=""
+		find = -1
+		while find == -1:
+			buffer = h.readline()
+			find = buffer.find("class")
 			actualLine += 1
+		res = buffer.split()
+		self.name = res[1]
 		h.readline()
 		actualLine += 1
 		for line in h:
@@ -140,7 +146,6 @@ class Cpp:
 		if len(self.attributes) == 0:
 			print("No attribute found in " + self.headerName)
 			return 1
-		self.insertLine += 1
 		h.close()
 		return 0
 

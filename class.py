@@ -22,4 +22,4 @@ if __name__ == "__main__":
 	elif (args.suffix == True):
 		main(args.className, "suf")
 	else:
-		main(args.className)
+		main(args.className, None)

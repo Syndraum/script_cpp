@@ -86,7 +86,7 @@ class Cpp:
 		f = open(self.filename, "a")
 		buff=""
 		for att in self.attributes:
-			if att.name not in self.setters and att.name not in self.getters:
+			if att.a_name not in self.setters and att.a_name not in self.getters:
 				f.write(self.getClassGetter(att))
 				f.write(self.getClassSetter(att))
 				buff += att.getHeader()
@@ -153,7 +153,7 @@ class Cpp:
 		if (len(att.type) < 4):
 			return "\n{att.type}\t\t{att.pointer}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
 		else:
-			return "\n{att.type}\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
+			return "\n{att.type}\t{att.pointer}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
 
 	def getClassSetter(self, att):
-		return "\nvoid\t{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.name};\n}}\n".format(att=att, self=self)
+		return "\nvoid\t{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.a_name};\n}}\n".format(att=att, self=self)

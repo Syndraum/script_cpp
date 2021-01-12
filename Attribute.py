@@ -3,8 +3,12 @@ class Attribute:
 		self.type = m_type
 		self.name = m_name
 		self.pointer = m_pointer
-		self.getter = "get" + self.name.capitalize() + "()"
-		self.setter = "set" + self.name.capitalize() + "(" + self.type + " " + self.pointer + self.name + ")"
+		begin = 0
+		if (self.name.find("_") == 0):
+			begin = 1
+		self.a_name = self.name[begin:]
+		self.getter = "get" + self.a_name.capitalize() + "()"
+		self.setter = "set" + self.a_name.capitalize() + "(" + self.type + " " + self.pointer + self.a_name + ")"
 		self.get = -1
 		self.set = -1
 

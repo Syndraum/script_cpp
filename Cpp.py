@@ -146,7 +146,7 @@ class Cpp:
 
 	def getClassGetter(self, att):
 		if (len(att.type) < 4):
-			return "\n{att.type}\t\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
+			return "\n{att.type}\t\t{att.pointer}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
 		else:
 			return "\n{att.type}\t{att.pointer}{self.name}::{att.getter}\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
 

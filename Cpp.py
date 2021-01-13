@@ -156,4 +156,4 @@ class Cpp:
 			return "\n{att.type}\t{att.pointer}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
 
 	def getClassSetter(self, att):
-		return "\nvoid\t{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.a_name};\n}}\n".format(att=att, self=self)
+		return "\nint\t\t{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.a_name};\n\treturn 0;\n}}\n".format(att=att, self=self)

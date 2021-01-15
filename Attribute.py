@@ -2,13 +2,12 @@ class Attribute:
 	def __init__(self, m_type, m_name, m_pointer, m_const):
 		self.type = m_type
 		self.name = m_name
-		self.cap = m_name[0].upper() + m_name[1:]
 		self.pointer = m_pointer
 		self.const = m_const
 		begin = 0
 		if (self.name.find("_") == 0):
 			begin = 1
-		self.a_name = self.cap[begin:]
+		self.a_name = m_name[begin].upper() + m_name[begin + 1:]
 		self.getter = "get" + self.a_name + "(void)"
 		self.setter = "set" + self.a_name + "(" + self.type + " " + self.pointer + self.a_name + ")"
 		self.get = -1

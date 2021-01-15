@@ -63,17 +63,21 @@ class Cpp:
 
 	def getHeaderBuff(self):
 		nameUpper = self.name.upper()
-		return "#ifndef " + nameUpper + "\n# define " + nameUpper + "\n\nclass " + self.name + "\n{\npublic:\n\n\t" + self.name + "(void);\n\t" + self.name + "(" + self.name + " const & src);\n\t~" + self.name + "(void);\n\t"+self.name+" &\toperator=("+self.name+" const &rhs);\n};\n\n#endif\n"
+		return "#ifndef " + nameUpper + "\n# define " + nameUpper + "\n\nclass " + self.name + "\n{\npublic:\n\n\t" + self.name + "(void);\n\t" + self.name + "(" + self.name + " const & src);\n\t~" + self.name + "(void);\n\t"+self.name+" &\toperator=("+self.name+" const &rhs);\n\nprivate:\n\n};\n\n#endif\n"
 
 	def	setNewAttribute(self, line):
 		args = line.split()
-		m_type = args[0]
-		m_name = args[1]
+		i = 0
+		if (args[i] == "static"):
+			i += 1
+		m_type = args[i]
+		i += 1 
+		m_name = args[i]
 		m_pointer = ""
-		if args[1].find("*") == 0:
+		if args[i].find("*") == 0:
 			m_pointer = "*"
-			m_name = args[1][1::]
-		if args[1].find(";") == len(args[1]) - 1:
+			m_name = args[i][1::]
+		if args[i].find(";") == len(args[i]) - 1:
 			m_name = m_name[:-1]
 		self.attributes.append(Attribute(m_type, m_name, m_pointer))
 

@@ -9,7 +9,7 @@ class Attribute:
 		if (self.name.find("_") == 0):
 			begin = 1
 		self.a_name = self.cap[begin:]
-		self.getter = "get" + self.a_name + "()"
+		self.getter = "get" + self.a_name + "(void)"
 		self.setter = "set" + self.a_name + "(" + self.type + " " + self.pointer + self.a_name + ")"
 		self.get = -1
 		self.set = -1

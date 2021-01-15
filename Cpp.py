@@ -94,7 +94,7 @@ class Cpp:
 		f = open(self.filename, "a")
 		buff=""
 		for att in self.attributes:
-			if att.a_name not in self.setters and att.a_name not in self.getters:
+			if att.a_name.lower() not in self.setters and att.a_name.lower() not in self.getters:
 				f.write(self.getClassGetter(att))
 				if not att.const:
 					f.write(self.getClassSetter(att))

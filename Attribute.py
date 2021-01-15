@@ -16,4 +16,4 @@ class Attribute:
 		if len(self.type) < 4:
 			return "\n\t{att.type}\t\t{att.pointer}{att.getter} const;\n\tint\t\t{att.setter};".format(att=self)
 		else:
-			return "\n\t{att.type}\t{att.pointer}{att.getter} const;\n\tint\tvoid\t{att.setter};".format(att=self)
+			return "\n\t{att.type}\t{att.pointer}{att.getter} const;\n\tint\t\t{att.setter};".format(att=self)

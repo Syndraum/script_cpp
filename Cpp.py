@@ -59,11 +59,11 @@ class Cpp:
 		h.close
 
 	def getFileBuff(self):
-		return "#include \"" + self.headerName + "\"\n\n" + self.name + "::" + self.name + "()\n{\n\t\n}\n\n" + self.name + "::~" + self.name + "()\n{\n\t\n}\n"
+		return "#include \"" + self.headerName + "\"\n\n" + self.name + "::" + self.name + "(void){}\n\n"+ self.name + "::" + self.name + "("+self.name+" const & src)\n{\n\t*this = src;\n}\n\n" + self.name + "::~" + self.name + "(void)\n{\n\t\n}\n\n"+self.name+" &\t"+self.name+"::operator=("+self.name+" const & rhs)\n{\n\t*this = rhs;\n}\n"
 
 	def getHeaderBuff(self):
 		nameUpper = self.name.upper()
-		return "#ifndef " + nameUpper + "\n#define " + nameUpper + "\n\nclass " + self.name + "\n{\n\tpublic:\n\n\t" + self.name + "();\n\t~" + self.name + "();\n};\n\n#endif\n"
+		return "#ifndef " + nameUpper + "\n# define " + nameUpper + "\n\nclass " + self.name + "\n{\npublic:\n\n\t" + self.name + "(void);\n\t" + self.name + "(" + self.name + " const & src);\n\t~" + self.name + "(void);\n\t"+self.name+" &\toperator=("+self.name+" const &rhs);\n};\n\n#endif\n"
 
 	def	setNewAttribute(self, line):
 		args = line.split()

@@ -68,10 +68,14 @@ class Cpp:
 	def	setNewAttribute(self, line):
 		args = line.split()
 		i = 0
+		const=False
 		if (args[i] == "static"):
 			i += 1
 		m_type = args[i]
-		i += 1 
+		i += 1
+		if (args[i] == "const"):
+			const=True
+			i += 1
 		m_name = args[i]
 		m_pointer = ""
 		if args[i].find("*") == 0:
@@ -79,7 +83,7 @@ class Cpp:
 			m_name = args[i][1::]
 		if args[i].find(";") == len(args[i]) - 1:
 			m_name = m_name[:-1]
-		self.attributes.append(Attribute(m_type, m_name, m_pointer))
+		self.attributes.append(Attribute(m_type, m_name, m_pointer, const))
 
 	def	update(self):
 		if self.file_not_exist(self.filename) or self.file_not_exist(self.headerName):
@@ -92,7 +96,8 @@ class Cpp:
 		for att in self.attributes:
 			if att.a_name not in self.setters and att.a_name not in self.getters:
 				f.write(self.getClassGetter(att))
-				f.write(self.getClassSetter(att))
+				if not att.const:
+					f.write(self.getClassSetter(att))
 				buff += att.getHeader()
 		f.close()
 		if buff != "":

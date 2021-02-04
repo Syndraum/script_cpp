@@ -59,7 +59,7 @@ class Cpp:
 		h.close
 
 	def getFileBuff(self):
-		return "#include \"" + self.headerName + "\"\n\n" + self.name + "::" + self.name + "(void){}\n\n"+ self.name + "::" + self.name + "("+self.name+" const & src)\n{\n\t*this = src;\n}\n\n" + self.name + "::~" + self.name + "(void)\n{\n\t\n}\n\n"+self.name+" &\t"+self.name+"::operator=("+self.name+" const & rhs)\n{\n\t*this = rhs;\n}\n"
+		return "#include \"" + self.headerName + "\"\n\n" + self.name + "::" + self.name + "(void){}\n\n"+ self.name + "::" + self.name + "("+self.name+" const & src)\n{\n\t*this = src;\n}\n\n" + self.name + "::~" + self.name + "(void)\n{\n\t\n}\n\n"+self.name+" &\t"+self.name+"::operator=("+self.name+" const & rhs)\n{\n\treturn *this;\n}\n"
 
 	def getHeaderBuff(self):
 		nameUpper = self.name.upper()
@@ -131,14 +131,14 @@ class Cpp:
 			if line.find("};") != -1:
 				break
 			if private:
-				if line.find("public") != -1:
+				if line.find("public:") != -1:
 					private = False
 					if self.insertLine == -1:
 						self.insertLine = actualLine
 				elif not line == "\n" and line.find("(") == -1:
 					self.setNewAttribute(line)
 			elif not private:
-				if line.find("private") != -1:
+				if line.find("private:") != -1 or line.find("protected:") != -1:
 					private = True
 				else:
 					setter=line.find("set")

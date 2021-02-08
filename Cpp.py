@@ -67,6 +67,8 @@ class Cpp:
 
 	def	setNewAttribute(self, line):
 		args = line.split()
+		if len(args) <= 1:
+			return -1
 		i = 0
 		const=False
 		if (args[i] == "static"):
@@ -135,7 +137,7 @@ class Cpp:
 					private = False
 					if self.insertLine == -1:
 						self.insertLine = actualLine
-				elif not line == "\n" and line.find("(") == -1:
+				elif not line == "\n" and line.find("(") == -1 and line.find("protected:") == -1:
 					self.setNewAttribute(line)
 			elif not private:
 				if line.find("private:") != -1 or line.find("protected:") != -1:

@@ -73,13 +73,19 @@ class Cpp:
 		const=False
 		if (args[i] == "static"):
 			i += 1
+		if (args[i] == "const"):
+			const=True
+			i += 1
 		m_type = args[i]
 		i += 1
 		if (args[i] == "const"):
 			const=True
 			i += 1
-		m_name = args[i]
 		m_pointer = ""
+		if args[i] == "*":
+			m_pointer = "*"
+			i += 1
+		m_name = args[i]
 		if args[i].find("*") == 0:
 			m_pointer = "*"
 			m_name = args[i][1::]

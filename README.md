@@ -4,9 +4,15 @@
 
 Two actions as possible
 
-`class.py className [...]` create .cpp and .hpp files. You can specify as many class names as you want
+`class.py className [...]` create .cpp and .hpp files. You can specify as many class names as you want. Class are canonical
 
-`class.sh className [...]` same as `class.py` but in shell
+-I option create interface
+
+-p prefix fileName with "Class" ex : `ClassPersonnage.hpp`
+
+-s suffix filename with ".class" ex : `Personnage.class.hpp` 
+
+`class.sh className [...]` same as `class.py` but in shell. No option available
 
 `update.py [...]` check .cpp and .hpp files in actual dir and generate only necessary setter and getter. You can specify class name in arguments for specific application.
 
@@ -27,27 +33,39 @@ That will create 2 files, Personnage.hpp
 ```cpp
 #include "Personnage.hpp"
 
-Personnage::Personnage()
+Personnage::Personnage(void){}
+
+Personnage::Personnage(Personnage const & src)
+{
+	*this = src;
+}
+
+Personnage::~Personnage(void)
 {
 	
 }
 
-Personnage::~Personnage()
+Personnage &	Personnage::operator=(Personnage const & rhs)
 {
-	
+	return *this;
 }
 ```
 and Personnage.cpp
 ```cpp
 #ifndef PERSONNAGE
-#define PERSONNAGE
+# define PERSONNAGE
 
 class Personnage
 {
-	public:
+public:
 
-	Personnage();
-	~Personnage();
+	Personnage(void);
+	Personnage(Personnage const & src);
+	~Personnage(void);
+	Personnage &	operator=(Personnage const &rhs);
+
+private:
+
 };
 
 #endif
@@ -58,18 +76,17 @@ class Personnage
 ```cpp
 class Personnage
 {
-	int	mana;
-
-	int test;
-	public:
+	int mana;
+public:
 
 	int life;
 
-	Personnage();
-	~Personnage();
+	Personnage(void);
+	Personnage(Personnage const & src);
+	~Personnage(void);
+	Personnage &	operator=(Personnage const &rhs);
 
-	private:
-
+private:
 	char *name;
 };
 ```
@@ -83,56 +100,45 @@ python3 ./update.py
 ```cpp
 class Personnage
 {
-	int	mana;
-
-	int test;
-	public:
+	int mana;
+public:
 
 	int life;
 
-	Personnage();
-	~Personnage();
+	Personnage(void);
+	Personnage(Personnage const & src);
+	~Personnage(void);
+	Personnage &	operator=(Personnage const &rhs);
 
-	int		getMana();
-	void	setMana(int mana);
-	int		getTest();
-	void	setTest(int test);
-	char	*getName();
-	void	setName(char *name);
+	int	getMana(void) const;
+	int	setMana(int Mana);
+	char	*getName(void) const;
+	int	setName(char *Name);
 
-	private:
-
+private:
 	char *name;
 };
 ```
 ```cpp
-int		Personnage::getMana()
+int		Personnage::getMana(void) const
 {
 	return this->mana;
 }
 
-void	Personnage::setMana(int mana)
+int		Personnage::setMana(int Mana)
 {
-	this->mana = mana;
+	this->mana = Mana;
+	return 0;
 }
 
-int		Personnage::getTest()
-{
-	return this->test;
-}
-
-void	Personnage::setTest(int test)
-{
-	this->test = test;
-}
-
-char	*Personnage::getName()
+char	*Personnage::getName(void) const
 {
 	return this->name;
 }
 
-void	Personnage::setName(char *name)
+int		Personnage::setName(char *Name)
 {
-	this->name = name;
+	this->name = Name;
+	return 0;
 }
 ```

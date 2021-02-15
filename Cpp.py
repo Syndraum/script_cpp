@@ -82,31 +82,18 @@ class Cpp:
 
 	def	setNewAttribute(self, line):
 		args = line.split()
-		if len(args) <= 1:
-			return -1
-		i = 0
-		const=False
-		if (args[i] == "static"):
-			i += 1
-		if (args[i] == "const"):
-			const=True
-			i += 1
-		m_type = args[i]
-		i += 1
-		if (args[i] == "const"):
-			const=True
-			i += 1
-		m_pointer = ""
-		if args[i] == "*":
-			m_pointer = "*"
-			i += 1
-		m_name = args[i]
-		if args[i].find("*") == 0:
-			m_pointer = "*"
-			m_name = args[i][1::]
-		if args[i].find(";") == len(args[i]) - 1:
+		m_type = args[:-1]
+		m_name = args[-1]
+		if m_name.find("*") == 0:
+			ct = m_name.count('*')
+			m_type.append(m_name[0:ct])
+			m_name = m_name[ct::]
+		if m_name.find(";") == len(m_name) - 1:
 			m_name = m_name[:-1]
-		self.attributes.append(Attribute(m_type, m_name, m_pointer, const))
+		if m_type[0] == "static":
+			m_type = m_type[1::]
+		m_const = "const" in m_type
+		self.attributes.append(Attribute(m_type, m_name, m_const))
 
 	def	update(self):
 		if self.file_not_exist(self.filename) or self.file_not_exist(self.headerName):
@@ -114,14 +101,20 @@ class Cpp:
 		ret = self.parsing()
 		if  ret > 0:
 			return ret
+		max_len=0
+		for att in self.attributes:
+			if (len(att.type) > max_len):
+				max_len=len(att.type)
+		max_len = max_len
+		max_tab = ((max_len) // 4) + 1
 		f = open(self.filename, "a")
 		buff=""
 		for att in self.attributes:
 			if att.a_name.lower() not in self.setters and att.a_name.lower() not in self.getters:
-				f.write(self.getClassGetter(att))
+				f.write(self.getClassGetter(att, max_tab))
 				if not att.const:
-					f.write(self.getClassSetter(att))
-				buff += att.getHeader()
+					f.write(self.getClassSetter(att, max_tab))
+				buff += att.getHeader(max_tab)
 		f.close()
 		if buff != "":
 			buff += '\n'
@@ -181,11 +174,10 @@ class Cpp:
 		h.close()
 		return 0
 
-	def getClassGetter(self, att):
-		if (len(att.type) < 4):
-			return "\n{att.type}\t\t{att.pointer}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
-		else:
-			return "\n{att.type}\t{att.pointer}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self)
+	def getClassGetter(self, att, max_tab):
+		tab = '\t' * (max_tab - (len(att.type) // 4))
+		return "\n{att.type}{tab}{self.name}::{att.getter} const\n{{\n\treturn this->{att.name};\n}}\n".format(att=att, self=self, tab=tab)
 
-	def getClassSetter(self, att):
-		return "\nint\t\t{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.a_name};\n\treturn 0;\n}}\n".format(att=att, self=self)
+	def getClassSetter(self, att, max_tab):
+		tab = '\t' * max_tab
+		return "\nint{tab}{self.name}::{att.setter}\n{{\n\tthis->{att.name} = {att.a_name};\n\treturn 0;\n}}\n".format(att=att, self=self, tab=tab)

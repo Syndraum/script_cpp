@@ -78,7 +78,7 @@ class Cpp:
 
 	def getHeaderBuff(self):
 		nameUpper = self.name.upper()
-		return "#ifndef " + nameUpper + "\n# define " + nameUpper + "\n\nclass " + self.name + "\n{\npublic:\n\n\t" + self.name + "(void);\n\t" + self.name + "(" + self.name + " const & src);\n\t~" + self.name + "(void);\n\t"+self.name+" &\toperator=("+self.name+" const &rhs);\n\nprivate:\n\n};\n\n#endif\n"
+		return "#ifndef " + nameUpper + "\n# define " + nameUpper + "\n\nclass " + self.name + "\n{\npublic:\n\n\t" + self.name + "(void);\n\t" + self.name + "(" + self.name + " const & src);\n\tvirtual ~" + self.name + "(void);\n\t"+self.name+" &\toperator=("+self.name+" const &rhs);\n\nprivate:\n\n};\n\n#endif\n"
 
 	def	setNewAttribute(self, line):
 		args = line.split()

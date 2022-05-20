@@ -1,24 +1,30 @@
 > :warning: **Important note: still in development. Some bugs may appear**
 
-## Presentation
+## Overview
 
-Two actions as possible
+- [Generate](#generate)
+- [Update](#update)
+- [Usage](#usage)
+
+## Generate
 
 `class.py className [...]` create .cpp and .hpp files. You can specify as many class names as you want. Class are canonical
 
 -I option create interface
 
--p prefix fileName with "Class" ex : `ClassPersonnage.hpp`
+-p prefix fileName with "Class" ex : `ClassWarrior.hpp`
 
--s suffix filename with ".class" ex : `Personnage.class.hpp` 
+-s suffix filename with ".class" ex : `Warrior.class.hpp` 
 
-`class.sh className [...]` same as `class.py` but in shell. No option available
+`class.sh className [...]` same as `class.py` but with no option available
 
-`update.py [...]` check .cpp and .hpp files in actual dir and generate only necessary setter and getter. You can specify class name in arguments for specific application.
+## Update
+
+`update.py [...]` check all .cpp and .hpp files in actual directory and generate only necessary setter and getter. You can specify class name in arguments for specific class.
 
 `getSet.sh [...]` same as `update.py` but in shell :warning: this function do not check duplicate setter and getter
 
-## Utilisation
+## Usage
 
 run command with bash `bash ./class.sh`
 or python3 `python3 ./class.py`
@@ -26,43 +32,43 @@ or python3 `python3 ./class.py`
 1. Create class
 
 ```
-python3 ./class.py Personnage
+python3 ./class.py Warrior
 ```
 
-That will create 2 files, Personnage.hpp
+That will create 2 files, Warrior.cpp
 ```cpp
-#include "Personnage.hpp"
+#include "Warrior.hpp"
 
-Personnage::Personnage(void){}
+Warrior::Warrior(void){}
 
-Personnage::Personnage(Personnage const & src)
+Warrior::Warrior(Warrior const & src)
 {
 	*this = src;
 }
 
-Personnage::~Personnage(void)
+Warrior::~Warrior(void)
 {
 	
 }
 
-Personnage &	Personnage::operator=(Personnage const & rhs)
+Warrior &	Warrior::operator=(Warrior const & rhs)
 {
 	return *this;
 }
 ```
-and Personnage.cpp
+and Warrior.hpp
 ```cpp
-#ifndef PERSONNAGE
-# define PERSONNAGE
+#ifndef WARRIOR
+# define WARRIOR
 
-class Personnage
+class Warrior
 {
 public:
 
-	Personnage(void);
-	Personnage(Personnage const & src);
-	~Personnage(void);
-	Personnage &	operator=(Personnage const &rhs);
+	Warrior(void);
+	Warrior(Warrior const & src);
+	~Warrior(void);
+	Warrior &	operator=(Warrior const &rhs);
 
 private:
 
@@ -74,17 +80,17 @@ private:
 
 2. Insert attributes you want
 ```cpp
-class Personnage
+class Warrior
 {
 	int mana;
 public:
 
 	int life;
 
-	Personnage(void);
-	Personnage(Personnage const & src);
-	~Personnage(void);
-	Personnage &	operator=(Personnage const &rhs);
+	Warrior(void);
+	Warrior(Warrior const & src);
+	~Warrior(void);
+	Warrior &	operator=(Warrior const &rhs);
 
 private:
 	char *name;
@@ -98,17 +104,17 @@ python3 ./update.py
 ```
 4. Look at the results
 ```cpp
-class Personnage
+class Warrior
 {
 	int mana;
 public:
 
 	int life;
 
-	Personnage(void);
-	Personnage(Personnage const & src);
-	~Personnage(void);
-	Personnage &	operator=(Personnage const &rhs);
+	Warrior(void);
+	Warrior(Warrior const & src);
+	~Warrior(void);
+	Warrior &	operator=(Warrior const &rhs);
 
 	int	getMana(void) const;
 	int	setMana(int Mana);
@@ -120,23 +126,23 @@ private:
 };
 ```
 ```cpp
-int		Personnage::getMana(void) const
+int		Warrior::getMana(void) const
 {
 	return this->mana;
 }
 
-int		Personnage::setMana(int Mana)
+int		Warrior::setMana(int Mana)
 {
 	this->mana = Mana;
 	return 0;
 }
 
-char	*Personnage::getName(void) const
+char	*Warrior::getName(void) const
 {
 	return this->name;
 }
 
-int		Personnage::setName(char *Name)
+int		Warrior::setName(char *Name)
 {
 	this->name = Name;
 	return 0;
